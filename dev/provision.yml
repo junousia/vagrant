@@ -1,0 +1,46 @@
+---
+- hosts: all
+  remote_user: vagrant
+  gather_facts: no
+
+  tasks:
+  - name: Update APT cache
+    apt: update_cache=yes
+    sudo: yes
+
+  - name: Install list of packages
+    apt: pkg={{item}} state=installed
+    with_items:
+      - git
+      - vim
+      - lttng-tools
+      - liblttng-ust0 
+      - python-scapy
+      - python-nose
+      - libboost-serialization1.55.0
+      - libboost-program-options1.55.0
+      - rpm
+      - python-pip
+      - python-dev
+    sudo: yes
+
+  - pip: name=posix_ipc
+    sudo: yes
+
+  - name: Create symlink for Boost libraries
+    file: src=/usr/lib/x86_64-linux-gnu/libboost_serialization.so.1.55.0 dest=/usr/lib/x86_64-linux-gnu/libboost_serialization.so.1.53.0 state=link
+    sudo: yes
+
+  - name: Create symlink for Boost libraries
+    file: src=/usr/lib/x86_64-linux-gnu/libboost_program_options.so.1.55.0 dest=/usr/lib/x86_64-linux-gnu/libboost_program_options.so.1.53.0 state=link
+    sudo: yes
+
+  - git: accept_hostkey=yes
+         repo=git://github.com/junousia/dotfiles.git dest=/home/vagrant/.dotfiles
+
+  - command: sh install.sh /home/vagrant/
+    args:
+      chdir: /home/vagrant/.dotfiles
+      creates: /home/vagrant/.vim/bundle/neobundle.git
+
+  - command: /home/vagrant/.vim/bundle/neobundle.vim/bin/neoinstall
