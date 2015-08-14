@@ -23,6 +23,7 @@
       - python-pip
       - python-dev
       - gdb
+      - zsh
     sudo: yes
 
   - pip: name=posix_ipc
