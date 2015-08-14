@@ -14,7 +14,7 @@
       - git
       - vim
       - lttng-tools
-      - liblttng-ust0 
+      - liblttng-ust0
       - python-scapy
       - python-nose
       - libboost-serialization1.55.0
@@ -22,6 +22,7 @@
       - rpm
       - python-pip
       - python-dev
+      - gdb
     sudo: yes
 
   - pip: name=posix_ipc
@@ -35,12 +36,19 @@
     file: src=/usr/lib/x86_64-linux-gnu/libboost_program_options.so.1.55.0 dest=/usr/lib/x86_64-linux-gnu/libboost_program_options.so.1.53.0 state=link
     sudo: yes
 
-  - git: accept_hostkey=yes
+  - name: Allow tcpdump
+    shell: echo 0 | tee /proc/sys/kernel/yama/ptrace_scope
+    sudo: yes
+
+  - name: Clone dotfiles
+    git: accept_hostkey=yes
          repo=git://github.com/junousia/dotfiles.git dest=/home/vagrant/.dotfiles
 
-  - command: sh install.sh /home/vagrant/
+  - name: Install dotfiles
+    command: sh install.sh /home/vagrant/
     args:
       chdir: /home/vagrant/.dotfiles
       creates: /home/vagrant/.vim/bundle/neobundle.git
 
-  - command: /home/vagrant/.vim/bundle/neobundle.vim/bin/neoinstall
+  - name: Install Vim plugins
+    command: /home/vagrant/.vim/bundle/neobundle.vim/bin/neoinstall
