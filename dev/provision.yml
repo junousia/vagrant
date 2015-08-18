@@ -24,6 +24,11 @@
       - python-dev
       - gdb
       - zsh
+      - python-glanceclient
+      - python-heatclient
+      - python-keystoneclient
+      - python-neutronclient
+      - python-novaclient
     sudo: yes
 
   - pip: name=posix_ipc
