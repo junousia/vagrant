@@ -1,7 +1,8 @@
 ---
-- hosts: all
-  remote_user: vagrant
+- name: Install packages
+  hosts: all
   gather_facts: no
+  remote_user: vagrant
 
   tasks:
   - name: Update APT cache
@@ -11,6 +12,8 @@
   - name: Install list of packages
     apt: pkg={{item}} state=installed
     with_items:
+      - cmake
+      - build-essential
       - git
       - vim
       - lttng-tools
@@ -46,15 +49,39 @@
     shell: echo 0 | tee /proc/sys/kernel/yama/ptrace_scope
     sudo: yes
 
+- name: Create user {{ target_user }}
+  hosts: all
+  gather_facts: no
+  remote_user: vagrant
+
+  tasks:
+  - name: Create user
+    user: name={{ target_user }} generate_ssh_key=yes ssh_key_bits=2048 ssh_key_file=.ssh/id_rsa groups=vagrant shell=/usr/bin/zsh
+    sudo: yes
+
+  - name: Passwordless sudo
+    lineinfile: dest=/etc/sudoers state=present regexp='^{{ target_user }}\=' line='{{ target_user }} ALL=(ALL) NOPASSWD:ALL' validate='visudo -cf %s'
+    sudo: yes
+
+  - name: Authorized keys
+    authorized_key: user={{ target_user }} key=https://github.com/junousia.keys
+    sudo: yes
+
+- name: Configure user {{ target_user }}
+  hosts: all
+  gather_facts: no
+  remote_user: "{{ target_user }}"
+
+  tasks:
   - name: Clone dotfiles
     git: accept_hostkey=yes
-         repo=git://github.com/junousia/dotfiles.git dest=/home/vagrant/.dotfiles
+         repo=git://github.com/junousia/dotfiles.git dest=/home/{{ target_user }}/.dotfiles
 
   - name: Install dotfiles
-    command: sh install.sh /home/vagrant/
+    command: sh install.sh
     args:
-      chdir: /home/vagrant/.dotfiles
-      creates: /home/vagrant/.vim/bundle/neobundle.git
+      chdir: /home/{{ target_user }}/.dotfiles
+      creates: /home/{{ target_user }}/.vim/bundle/neobundle.git
 
   - name: Install Vim plugins
-    command: /home/vagrant/.vim/bundle/neobundle.vim/bin/neoinstall
+    command: /home/{{ target_user }}/.vim/bundle/neobundle.vim/bin/neoinstall
