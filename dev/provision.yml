@@ -63,8 +63,12 @@
     lineinfile: dest=/etc/sudoers state=present regexp='^{{ target_user }}\=' line='{{ target_user }} ALL=(ALL) NOPASSWD:ALL' validate='visudo -cf %s'
     sudo: yes
 
-  - name: Authorized keys
-    authorized_key: user={{ target_user }} key=https://github.com/junousia.keys
+  - name: Authorized keys for {{ target_user }}
+    authorized_key: user={{ target_user }} key="{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
+    sudo: yes
+
+  - name: Authorized keys for vagrant
+    authorized_key: user=vagrant key="{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
     sudo: yes
 
 - name: Configure user {{ target_user }}
