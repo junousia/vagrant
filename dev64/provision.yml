@@ -32,6 +32,10 @@
       - python-keystoneclient
       - python-neutronclient
       - python-novaclient
+      - ccache
+      - ninja-build
+      - re2c
+      - rpm
     sudo: yes
 
   - pip: name=posix_ipc

@@ -1,0 +1,3 @@
+[submodule "open-build-service"]
+	path = open-build-service
+	url = git@github.com:openSUSE/open-build-service.git
