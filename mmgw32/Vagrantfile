@@ -6,19 +6,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.box = "ubuntu/trusty32"
   config.ssh.insert_key = false
   config.ssh.private_key_path = [File.expand_path('~/.vagrant.d/insecure_private_key'), File.expand_path('~/.ssh/id_rsa')]
-
-  config.vm.define "dev32" do |dev32|
+  config.vm.define "mmgw32" do |dev32|
   end
 
-  config.vm.provision "ansible" do |ansible|
-    ansible.playbook = "provision.yml"
-    ansible.extra_vars = {
-      target_user: ENV['USER'],
-      extra_tasks_file: "extra_tasks.yml"
-    }
-  end
-
-  config.vm.hostname = "ubuntu32"
+  config.vm.hostname = "mmgw32"
   config.vm.box_check_update = true
   config.ssh.forward_agent = true
 
@@ -27,9 +18,16 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       shell.args = %q{/etc/sudoers.d/root_ssh_agent "Defaults    env_keep += \"SSH_AUTH_SOCK\""}
   end
 
+  config.vm.provision "ansible" do |ansible|
+    ansible.playbook = "../mmgw32.yml"
+    ansible.extra_vars = {
+      target_user: ENV['USER'],
+    }
+  end
+
   config.vm.provider "virtualbox" do |v|
-    v.name = "dev32"
-    v.memory = 1024
+    v.name = "mmgw32"
+    v.memory = 4096
     v.cpus = 2
   end
 end

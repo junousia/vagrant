@@ -6,21 +6,19 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.box = "ubuntu/trusty64"
   config.ssh.insert_key = false
   config.ssh.private_key_path = [File.expand_path('~/.vagrant.d/insecure_private_key'), File.expand_path('~/.ssh/id_rsa')]
-
-  config.vm.define "dev64" do |dev64|
+  config.vm.define "mmgw64" do |dev64|
   end
 
-  config.vm.provision "ansible" do |ansible|
-    ansible.playbook = "provision.yml"
-    ansible.extra_vars = {
-      target_user: ENV['USER'],
-      extra_tasks_file: "extra_tasks.yml"
-    }
-  end
-
-  config.vm.hostname = "ubuntu64"
+  config.vm.hostname = "mmgw64"
   config.vm.box_check_update = true
   config.ssh.forward_agent = true
+
+  config.vm.provision "ansible" do |ansible|
+    ansible.playbook = "../mmgw64.yml"
+    ansible.extra_vars = {
+      target_user: ENV['USER'],
+    }
+  end
 
   config.vm.provision :shell do |shell|
       shell.inline = "touch $1 && chmod 0440 $1 && echo $2 > $1"
@@ -28,8 +26,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   end
 
   config.vm.provider "virtualbox" do |vb|
-    vb.name = "dev64"
-    vb.memory = 1024
+    vb.name = "mmgw64"
+    vb.memory = 4096
     vb.cpus = 2
   end
 end

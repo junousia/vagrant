@@ -1,0 +1,8 @@
+---
+- name: Install list of packages
+  apt: pkg={{item}} state=installed
+  with_items:
+    - git
+    - vim
+    - zsh
+  sudo: yes

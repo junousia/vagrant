@@ -1,0 +1,10 @@
+---
+- name: Configure VM
+  hosts: all
+  gather_facts: no
+  remote_user: vagrant
+
+  roles:
+    - packaging
+    - user
+    - mmgw

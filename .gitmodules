@@ -1,3 +1,6 @@
 [submodule "open-build-service"]
 	path = open-build-service
 	url = git@github.com:openSUSE/open-build-service.git
+[submodule "roles/mmgw"]
+	path = roles/mmgw
+	url = git@bitbucket.org:junousia/mmgwrole.git

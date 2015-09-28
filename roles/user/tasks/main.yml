@@ -1,0 +1,7 @@
+---
+- name: Create user
+  include: create.yml
+
+- name: Install dotfiles
+  include: dotfiles.yml
+  ansible_ssh_user: "{{ target_user }}"
