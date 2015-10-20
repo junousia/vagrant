@@ -1,0 +1,6 @@
+---
+- name: Update APT cache
+  include: apt.yml
+
+- name: Install base packages
+  include: packages.yml

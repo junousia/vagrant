@@ -1,0 +1,6 @@
+---
+- name: Install dotfiles
+  command: sh install.sh
+  args:
+    chdir: /home/{{ target_user }}/.dotfiles
+    creates: /home/{{ target_user }}/.vim/bundle/neobundle.git
