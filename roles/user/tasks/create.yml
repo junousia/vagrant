@@ -1,6 +1,6 @@
 ---
 - name: Create user
-  user: name={{ target_user }} groups=vagrant shell=/usr/bin/zsh
+  user: name={{ target_user }}
   sudo: yes
 
 - name: Passwordless sudo

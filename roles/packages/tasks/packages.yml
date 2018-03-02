@@ -6,4 +6,5 @@
     - vim
     - zsh
     - ctags
+    - avahi-daemon
   sudo: yes
