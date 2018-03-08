@@ -1,16 +1,16 @@
 ---
 - name: Create user
   user: name={{ target_user }}
-  sudo: yes
+  become: yes
 
 - name: Passwordless sudo
   lineinfile: dest=/etc/sudoers state=present regexp='^{{ target_user }}\=' line='{{ target_user }} ALL=(ALL) NOPASSWD:ALL' validate='visudo -cf %s'
-  sudo: yes
+  become: yes
 
 - name: Authorized keys for user
   authorized_key: user={{ target_user }} key="{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
-  sudo: yes
+  become: yes
 
 - name: Authorized keys for vagrant
   authorized_key: user=vagrant key="{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
-  sudo: yes
+  become: yes

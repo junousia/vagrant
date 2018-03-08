@@ -1,10 +1,10 @@
 ---
 - name: Install list of packages
-  apt: pkg={{item}} state=installed
+  apt: name={{item}} state=latest update_cache=yes
   with_items:
     - git
     - vim
     - zsh
     - ctags
     - avahi-daemon
-  sudo: yes
+  become: yes

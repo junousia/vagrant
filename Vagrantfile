@@ -7,8 +7,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.ssh.insert_key = false
   config.ssh.private_key_path = [File.expand_path('~/.vagrant.d/insecure_private_key'), File.expand_path('~/.ssh/id_rsa')]
   config.vm.define "dev64" do |dev64|
-  config.vm.network "private_network", type: "dhcp"
-  config.vm.network "public_network", type: "dhcp"
+    config.vm.network "public_network", type: "dhcp"
   end
 
   config.vm.hostname = "dev64"
@@ -16,7 +15,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.ssh.forward_agent = true
 
   config.vm.provision "ansible" do |ansible|
-    ansible.playbook = "../dev64.yml"
+    ansible.playbook = "dev64.yml"
     ansible.extra_vars = {
       target_user: ENV['USER'],
     }
