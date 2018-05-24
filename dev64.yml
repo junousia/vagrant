@@ -5,8 +5,6 @@
   remote_user: vagrant
 
   roles:
-    - docker
-    - packages
     - user
+    - packages
     - dotfiles
-    - mmgw

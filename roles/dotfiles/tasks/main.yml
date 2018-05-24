@@ -6,7 +6,3 @@
 - name: Install dotfiles
   include: install.yml
   ansible_ssh_user: "{{ target_user }}"
-
-- name: Install VIM plugins
-  include: vim.yml
-  ansible_ssh_user: "{{ target_user }}"

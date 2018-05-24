@@ -6,5 +6,6 @@
     - vim
     - zsh
     - ctags
+    - build-essential
     - avahi-daemon
   become: yes

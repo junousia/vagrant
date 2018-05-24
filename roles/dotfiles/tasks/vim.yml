@@ -1,3 +1,0 @@
----
-- name: Install Vim plugins
-  command: /home/{{ target_user }}/.vim/bundle/neobundle.vim/bin/neoinstall
